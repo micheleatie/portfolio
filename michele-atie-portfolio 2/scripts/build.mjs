@@ -1,4 +1,5 @@
-import { mkdir, writeFile, cp, rm } from 'node:fs/promises';
+import { mkdir, writeFile, cp, rm, readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { articles } from '../source/articles.mjs';
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const data = {
@@ -32,17 +33,18 @@ const data = {
   }
 };
 const pages = ['index.html','research.html','blog.html','design.html'];
+const stylesheet = `style-${createHash('sha256').update(await readFile('source/style.css')).digest('hex').slice(0,12)}.css`;
 const date = (iso, lang) => new Intl.DateTimeFormat(lang, {day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(iso));
 const link = (href, text) => `<a href="${esc(href)}">${esc(text)}</a>`;
 const heading = (label, title, intro) => `<header class="page-heading"><p class="eyebrow">${esc(label)}</p><h1>${esc(title)}</h1>${intro?`<p class="lead">${esc(intro)}</p>`:''}</header>`;
 function layout(lang, page, title, description, body) {
   const t=data[lang], other=lang==='fr'?'en':'fr';
   const active = page.includes('neuroarchitecture')||page.includes('designing-for')?'blog.html':page;
-  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)} — Michèle Atié</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#121e2b"><link rel="alternate" hreflang="${other}" href="../${other}/${page}"><link rel="stylesheet" href="../assets/style.css"><script src="../assets/site.js" defer></script></head><body><a class="skip" href="#main">${t.skip}</a><div class="wrap"><header class="header"><a class="brand" href="index.html">MICHÈLE ATIÉ</a><button class="menu-button" type="button" aria-controls="navigation" aria-expanded="false">${t.menu}</button><nav id="navigation" class="navigation" aria-label="${lang==='fr'?'Navigation principale':'Main navigation'}">${pages.map((p,i)=>`<a href="${p}"${p===active?' aria-current="page"':''}>${t.nav[i]}</a>`).join('')}</nav><div class="lang" aria-label="${lang==='fr'?'Langue':'Language'}"><a href="../fr/${page}" lang="fr" class="${lang==='fr'?'selected':''}"${lang==='fr'?' aria-current="true"':''}>FR</a> <span aria-hidden="true">/</span> <a href="../en/${page}" lang="en" class="${lang==='en'?'selected':''}"${lang==='en'?' aria-current="true"':''}>EN</a></div></header><main id="main">${body}</main><footer class="footer"><div><p>Michèle Atié · ${t.footer}</p><small>${t.rights}</small></div><div>${link('mailto:atiemichele@gmail.com',t.contact)}${link('https://www.linkedin.com/in/mich%C3%A8le-ati%C3%A9-658783193/','LinkedIn')}</div></footer></div></body></html>`;
+  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)} — Michèle Atié</title><meta name="description" content="${esc(description)}"><meta name="theme-color" content="#121e2b"><link rel="alternate" hreflang="${other}" href="../${other}/${page}"><link rel="stylesheet" href="../assets/${stylesheet}"><script src="../assets/site.js" defer></script></head><body><a class="skip" href="#main">${t.skip}</a><div class="wrap"><header class="header"><a class="brand" href="index.html">MICHÈLE ATIÉ</a><button class="menu-button" type="button" aria-controls="navigation" aria-expanded="false">${t.menu}</button><nav id="navigation" class="navigation" aria-label="${lang==='fr'?'Navigation principale':'Main navigation'}">${pages.map((p,i)=>`<a href="${p}"${p===active?' aria-current="page"':''}>${t.nav[i]}</a>`).join('')}</nav><div class="lang" aria-label="${lang==='fr'?'Langue':'Language'}"><a href="../fr/${page}" lang="fr" class="${lang==='fr'?'selected':''}"${lang==='fr'?' aria-current="true"':''}>FR</a> <span aria-hidden="true">/</span> <a href="../en/${page}" lang="en" class="${lang==='en'?'selected':''}"${lang==='en'?' aria-current="true"':''}>EN</a></div></header><main id="main">${body}</main><footer class="footer"><div><p>Michèle Atié · ${t.footer}</p><small>${t.rights}</small></div><div>${link('mailto:atiemichele@gmail.com',t.contact)}${link('https://www.linkedin.com/in/mich%C3%A8le-ati%C3%A9-658783193/','LinkedIn')}</div></footer></div></body></html>`;
 }
 await mkdir('docs/assets/images', {recursive:true});
 await cp('source/media','docs/assets/images',{recursive:true});
-await cp('source/style.css','docs/assets/style.css');
+await cp('source/style.css',`docs/assets/${stylesheet}`);
 await cp('source/site.js','docs/assets/site.js');
 for (const lang of ['fr','en']) {
   const t=data[lang]; await mkdir(`docs/${lang}`,{recursive:true});
