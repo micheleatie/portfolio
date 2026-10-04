@@ -9,6 +9,8 @@ for(const lang of ['fr','en']) {
     if(!html.includes(`<html lang="${lang}">`))errors.push(`${lang}/${file}: langue`);
     if((html.match(/<h1[ >]/g)||[]).length!==1)errors.push(`${lang}/${file}: h1`);
     if(/myportfolio\.com|adobe\.com|cdn\.myportfolio/.test(html))errors.push(`${file}: dépendance Adobe`);
+    const visible=html.replace(/<[^>]*>/g,'');
+    if(/&amp;|&(?!#\d+;|#x[0-9a-f]+;|[a-z]+;)/i.test(visible))errors.push(`${lang}/${file}: esperluette visible`);
     for(const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
       const href=match[1]; if(/^(https?:|mailto:|#)/.test(href)||!href)continue;
       const target=path.resolve(path.dirname(full),href.split('#')[0]);
