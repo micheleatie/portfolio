@@ -2,8 +2,8 @@
 :root{color-scheme:dark;--bg:#121e2b;--ink:#f5f3ee;--muted:#b8c2cd;--line:#35414e;--accent:#e4b67c;--panel:#1b2938;font-family:Inter,Arial,sans-serif;font-size:16px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);line-height:1.65}
-a{color:inherit;text-underline-offset:5px}
-a:hover{color:var(--accent)}
+a{color:var(--accent);text-underline-offset:5px}
+a:hover{color:#f5d39d;text-decoration:underline}
 button{font:inherit}
 a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
 img{display:block;max-width:100%;height:auto}
