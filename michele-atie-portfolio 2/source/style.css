@@ -37,7 +37,7 @@ main{min-height:65vh}
 .page-heading .lead{margin-bottom:0}
 .project{display:grid;grid-template-columns:70px 1fr 1fr;gap:30px;padding:32px 0;border-top:1px solid var(--line)}
 .number{color:var(--accent);font-size:13px}
-.project h2{font-family:Georgia,serif;font-size:28px;font-weight:400;margin:0}
+.project h3{font-family:Georgia,serif;font-size:28px;font-weight:400;margin:0}
 .project p{margin:0;color:var(--muted)}
 .project .text-link{margin-top:15px}
 .research-text{max-width:780px;color:var(--muted);font-size:17px}
@@ -97,7 +97,7 @@ dialog img{max-height:78vh;max-width:86vw;object-fit:contain;margin:auto}
 .page-heading{padding:42px 0 32px}
 .project{grid-template-columns:25px 1fr;gap:14px;padding:28px 0}
 .project>div:last-child{grid-column:2}
-.project h2{font-size:26px}
+.project h3{font-size:26px}
 .article-card{grid-template-columns:1fr 24px;gap:12px}
 .article-card time{grid-column:1/-1}
 .article-card h2{font-size:29px}
