@@ -4,7 +4,8 @@ import { articles } from '../source/articles.mjs';
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const data = {
   fr: {
-    nav:['À propos','Recherche','Blog','Design architectural'], skip:'Aller au contenu', menu:'Menu',
+    nav:['À propos','Recherche','Design architectural','Enseignement et consultation'], skip:'Aller au contenu', menu:'Menu',
+    teachingTitle:'Enseignement et consultation', teachingIntro:'Michèle Atié donne des cours à des étudiants en architecture et en design intérieur. Elle propose également des consultations pour les accompagner et les guider dans leurs projets, selon leurs besoins.', teachingContact:'Prendre contact', teachingSubject:'Enseignement et consultation',
     role:'Architecte diplômée d’État · Docteure · Enseignante', headline:'Architecture, ambiances<br>et recherche.',
     intro:'Michèle Atié s’intéresse à la perception et à l’expérience des espaces intérieurs. Son travail associe recherche, enseignement et création d’outils pour accompagner la conception architecturale.',
     researchLink:'Voir les travaux de recherche ↗', disciplineTitle:'Disciplines',
@@ -18,7 +19,8 @@ const data = {
     footer:'Architecture, recherche et création', rights:'Œuvres et textes : Michèle Atié.', contact:'Contact', back:'← Tous les articles', references:'Références', author:'Par Michèle Atié'
   },
   en: {
-    nav:['About','Research','Blog','Architectural Design'], skip:'Skip to content', menu:'Menu',
+    nav:['About','Research','Architectural Design','Teaching and consultation'], skip:'Skip to content', menu:'Menu',
+    teachingTitle:'Teaching and consultation', teachingIntro:'Michèle Atié teaches students in architecture and interior design. She also offers consultations to support and guide students in their projects, according to their needs.', teachingContact:'Get in touch', teachingSubject:'Teaching and consultation',
     role:'French State-qualified architecture graduate · PhD · Educator', headline:'Architecture, atmospheres<br>and research.',
     intro:'Michèle Atié is interested in the perception and experience of interior spaces. Her work combines research, teaching and the development of tools to support architectural design.',
     researchLink:'View the research ↗', disciplineTitle:'Disciplines',
@@ -32,7 +34,7 @@ const data = {
     footer:'Architecture, research and creative practice', rights:'Artwork and writing: Michèle Atié.', contact:'Contact', back:'← All articles', references:'References', author:'By Michèle Atié'
   }
 };
-const pages = ['index.html','research.html','blog.html','design.html'];
+const pages = ['index.html','research.html','design.html','teaching.html'];
 const stylesheet = `style-${createHash('sha256').update(await readFile('source/style.css')).digest('hex').slice(0,12)}.css`;
 const date = (iso, lang) => new Intl.DateTimeFormat(lang, {day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(iso));
 const link = (href, text) => `<a href="${esc(href)}">${esc(text)}</a>`;
@@ -46,21 +48,19 @@ await mkdir('docs/assets/images', {recursive:true});
 await cp('source/media','docs/assets/images',{recursive:true});
 await cp('source/style.css',`docs/assets/${stylesheet}`);
 await cp('source/site.js','docs/assets/site.js');
+await cp('source/favicon.svg','docs/assets/favicon-ma.svg');
 for (const lang of ['fr','en']) {
   const t=data[lang]; await mkdir(`docs/${lang}`,{recursive:true});
-  const save = async (page,title,intro,body)=>writeFile(`docs/${lang}/${page}`,layout(lang,page,title,intro,body));
+  const save = async (page,title,intro,body)=>writeFile(`docs/${lang}/${page}`,layout(lang,page,title,intro,body).replace('</head>','<link rel="icon" type="image/svg+xml" href="../assets/favicon-ma.svg"></head>'));
+  await save('teaching.html',t.teachingTitle,t.teachingIntro,`${heading('',t.teachingTitle,t.teachingIntro)}<section class="teaching-contact" aria-label="${t.contact}"><a class="contact-button" href="mailto:atiemichele@gmail.com?subject=${encodeURIComponent(t.teachingSubject)}">${t.teachingContact} ↗</a></section>`);
   await save('index.html',t.nav[0],t.intro,`<section class="hero"><div><p class="eyebrow">${t.role}</p><h1>${t.headline}</h1><p class="lead">${t.intro}</p><a class="text-link" href="research.html">${t.researchLink}</a></div><img class="portrait" src="../assets/images/about.jpg" width="906" height="874" alt="Michèle Atié" fetchpriority="high"></section><section class="section"><h2>${t.disciplineTitle}</h2><div class="disciplines">${t.disciplines.map(([name,text])=>`<div><h3>${name}</h3><p>${text}</p></div>`).join('')}</div></section>`);
   await save('research.html',t.researchTitle,t.researchIntro,`${heading(t.nav[1],t.researchTitle,t.researchIntro)}<section aria-label="${t.current}"><h2>${t.current}</h2>${t.projects.map(([name,text,action,href],i)=>`<div class="project"><span class="number">0${i+1}</span><h3>${name}</h3><div><p>${text}</p><a class="text-link" href="${href}">${action} ↗</a></div></div>`).join('')}</section><section class="section"><h2>${t.development}</h2><p>${link('https://www.pepite-pdl.fr/projets/archimmersion/','Pépite Archimmersion ↗')}</p></section><section class="section"><h2>${t.scientific}</h2><div class="scholar-links">${link('https://scholar.google.fr/citations?user=Gt-c0GMAAAAJ&hl='+lang+'&oi=ao','Google Scholar')}${link('https://www.researchgate.net/profile/Michele-Atie?ev=hdr_xprf','ResearchGate')}${link('https://cv.hal.science/michele-atie','HAL')}</div></section>`);
-  await save('blog.html',t.blogTitle,t.blogIntro,`${heading('Blog',t.blogTitle,t.blogIntro)}<div class="blog-list">${[...articles].reverse().map(a=>`<a class="article-card" href="${a.slug}.html" aria-label="${t.read} : ${a.title[lang]}"><time datetime="${a.date}">${date(a.date,lang)}</time><div><h2>${a.title[lang]}</h2><p>${a.subtitle[lang]}</p></div><span class="arrow" aria-hidden="true">↗</span></a>`).join('')}</div>`);
+  // Blog and articles are kept in source only, pending future publication.
+  for (const file of ['blog.html', ...articles.map(a=>`${a.slug}.html`)]) await rm(`docs/${lang}/${file}`, {force:true});
   // Artworks remain in the source archive, but this section is not published.
   await rm(`docs/${lang}/digital-art.html`, {force:true});
-  await save('design.html',t.designTitle,t.designIntro,`${heading(t.nav[3],t.designTitle,t.designIntro)}<div class="construction"><span class="status">${t.construction}</span><p>${t.designNote}</p></div>`);
-  for (const a of articles) {
-    const body=a.body[lang].map(([tag,value])=>tag==='ul'?`<ul>${value.map(v=>`<li>${esc(v)}</li>`).join('')}</ul>`:`<${tag}>${esc(value)}</${tag}>`).join('');
-    await save(`${a.slug}.html`,a.title[lang],a.subtitle[lang],`<article class="reading"><header><a class="text-link" href="blog.html">${t.back}</a><h1>${a.title[lang]}</h1><p class="subtitle">${a.subtitle[lang]}</p><p class="meta">${t.author} · <time datetime="${a.date}">${date(a.date,lang)}</time></p></header>${body}<section class="references"><h2>${t.references}</h2><ul>${a.references.map(([text,href])=>`<li>${link(href,text.replaceAll(" & ", lang==="fr"?" et ":" and "))}</li>`).join('')}</ul></section></article>`);
-  }
+  await save('design.html',t.designTitle,t.designIntro,`${heading(t.nav[2],t.designTitle,t.designIntro)}<div class="construction"><span class="status">${t.construction}</span><p>${t.designNote}</p></div>`);
 }
 await writeFile('docs/index.html','<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=fr/index.html"><title>Michèle Atié — Architecture, recherche et création</title></head><body><h1>Michèle Atié</h1><p><a href="fr/index.html">Français</a> · <a href="en/index.html">English</a></p></body></html>');
 await writeFile('docs/.nojekyll','');
-console.log('12 pages bilingues et accueil générés dans docs/.');
-
+console.log('8 pages bilingues et accueil générés dans docs/.');
