@@ -11,7 +11,7 @@ img{display:block;max-width:100%;height:auto}
 .header{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:100px;border-bottom:1px solid var(--line)}
 .brand,.brand:hover{color:var(--ink)}
 .brand{font-size:18px;letter-spacing:.12em;text-decoration:none;font-weight:700;white-space:nowrap}
-.navigation{display:flex;gap:22px;align-items:center}
+.navigation{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .navigation a{text-decoration:none;font-size:14px}
 .navigation a[aria-current]{color:var(--accent)}
 .lang{font-size:13px;white-space:nowrap}
@@ -28,6 +28,9 @@ main{min-height:65vh}
 .lead{font-size:19px;line-height:1.65;color:var(--muted)}
 .portrait{width:220px;aspect-ratio:1/1;object-fit:cover;object-position:center;border:0}
 .text-link{display:inline-block;color:var(--accent);font-size:14px;text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:5px;margin-top:18px}
+.teaching-contact{padding:0 0 64px}
+.contact-button{display:inline-block;padding:12px 20px;border:1px solid var(--accent);text-decoration:none;font-size:15px}
+.contact-button:hover{background:var(--panel)}
 .section{padding:52px 0;border-top:1px solid var(--line)}
 .section h2{font-size:30px;font-family:Georgia,serif;font-weight:400;line-height:1.25;margin:0 0 20px}
 .disciplines{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
@@ -76,7 +79,7 @@ dialog img{max-height:78vh;max-width:86vw;object-fit:contain;margin:auto}
 .note{color:var(--muted);font-size:14px;max-width:620px}
  @media(prefers-reduced-motion:reduce){*{transition:none!important}
 }
-@media(max-width:980px){.wrap{padding:0 28px}
+@media(max-width:1150px){.wrap{padding:0 28px}
 .header{flex-wrap:wrap;padding:23px 0;gap:16px}
 .navigation{order:3;width:100%;justify-content:space-between}
 .hero{gap:35px}

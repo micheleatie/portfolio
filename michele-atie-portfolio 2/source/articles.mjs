@@ -52,8 +52,7 @@ export const articles = [
         ['p', 'Le design biophilique ne se limite pas aux plantes : il peut intégrer des jeux de lumière et d’ombre et des stimuli visuels dynamiques qui font écho aux environnements naturels. Pensés avec attention, ces éléments peuvent évoquer le calme, la sécurité et la vitalité.'],
         ['p', 'Une piste consiste à intégrer des configurations de lumière et de couleur qui évoquent les cycles naturels. Des teintes chaudes et des contrastes doux le matin ou le soir, puis une lumière plus froide et diffuse à la mi-journée, sont explorés comme moyens d’accompagner les rythmes des usagers et leur confort psychologique. Dans des situations expérimentales, de tels scénarios ont montré un potentiel pour soutenir les performances cognitives et la stabilité émotionnelle, notamment dans des environnements isolés ou monotones.'],
         ['p', 'Les finitions et les couleurs peuvent également évoquer des repères sensoriels familiers ou réconfortants, comme les textures du bois ou les reflets mats. Ces choix contribuent à l’ambiance visuelle, mais aussi à une forme d’engagement sensoriel, parfois décrite comme un sentiment de présence ou d’appartenance à l’espace.'],
-        ['p', 'Intégrer ces stratégies dès les premières étapes de conception permet d’examiner comment les intérieurs pourraient être ressentis et utilisés.'],
-        ['p', 'À suivre…']
+        ['p', 'Intégrer ces stratégies dès les premières étapes de conception permet d’examiner comment les intérieurs pourraient être ressentis et utilisés.']
       ],
       en: [
         ['p', 'The design of interior spaces has long focused on function and visual aesthetics, but research reminds us that human experience is multi-sensory and shaped by how we perceive and feel space. Designing for the senses means paying attention to how environments stimulate not only vision, but also emotional, physiological, and cognitive responses.'],
@@ -64,8 +63,7 @@ export const articles = [
         ['p', 'Far from being limited to plants or greenery, biophilic design includes patterns of light and shadow and dynamic visual stimuli, all of which echo natural environments. When implemented thoughtfully, these elements can evoke a sense of calm, safety, and vitality.'],
         ['p', 'One promising approach involves the integration of light and color patterns that mimic natural cycles. For example, using warm hues and soft contrast in the morning or evening, and cooler, more diffuse light during midday, supports users’ circadian alignment and fosters psychological comfort. In experimental settings, such lighting scenarios have shown potential to enhance cognitive performance and emotional stability, particularly in isolated or monotonous environments.'],
         ['p', 'In addition, surface finishes and color configurations can be selected to evoke familiar or comforting sensory cues, such as wood textures or soft matte reflections. These material choices contribute not only to visual ambiance but also to a sensory engagement — often described as a sense of “presence” or “belonging” in the space.'],
-        ['p', 'Incorporating such strategies during early design stages allows designers to evaluate how interiors may feel and function.'],
-        ['p', 'To be continued…']
+        ['p', 'Incorporating such strategies during early design stages allows designers to evaluate how interiors may feel and function.']
       ]
     }
   }
